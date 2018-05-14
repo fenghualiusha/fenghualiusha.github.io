@@ -150,6 +150,61 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-socks_proxy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="socks代理翻墙"><a href="#socks代理翻墙" class="headerlink" title="socks代理翻墙"></a>socks代理翻墙</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>公司内部为了安全考虑常常将数据库、缓存等服务做访问限制。（设置防火墙）技术人员在程序开发时只能通过内网开发机（多数为linux系统）访问这些服务。这样做虽然保证了安全性，但给本地开发、调试带来了不小的麻烦。<br>下面分享一个socks代理方式解决上述问题</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p><img src="/img/socks_proxy/wenti.jpg" alt="image"></p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>因开发机可以访问受限服务，所以想到在开发机上搭建代理服务实现间接访问。</p>
+<h2 id="代理知识"><a href="#代理知识" class="headerlink" title="代理知识"></a>代理知识</h2><p>SOCKs代理协议是一个运行在OSI第五层会话层的协议，在第四层TCP层之上。它只是简单地传递数据包，而不必关心是何种应用协议(比如FTP、HTTP和NNTP请求)<br>HTTP代理是一个运行在OSI第七层应用层的协议，代理的只能是HTTP协议请求。<br>我们这里采用比较通用的socks5代理。</p>
+<h2 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h2><p>kingate（代理服务端）、proxifier（代理客户端）</p>
+<h2 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h2><h3 id="kingate安装及配置"><a href="#kingate安装及配置" class="headerlink" title="kingate安装及配置"></a>kingate安装及配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(1)https://sourceforge.net/projects/kingate/下载最新的kingate安装包</span><br><span class="line"></span><br><span class="line">(2)tar -zxvf kingate-2.2.tar.gz</span><br><span class="line"></span><br><span class="line">(3)cd kingate-2.2</span><br><span class="line"></span><br><span class="line">(4)./configure --prefix=/home/fenghua/kingate</span><br><span class="line"></span><br><span class="line">(5)make &amp;&amp; make install</span><br><span class="line">安装完成后在安装目录下会有bin  etc  var三个文件夹</span><br><span class="line">bin：kingate等二进制运行文件</span><br><span class="line">etc：access.conf  kingate.conf 等配置文件</span><br><span class="line">var：log、pid文件存放目录</span><br><span class="line"></span><br><span class="line">(6)vi etc/kingate.conf (修改kingate.conf配置文件,将manage_port后的端口号配置成可用的端口。</span><br><span class="line">此端口为kingate管理页面端口）</span><br><span class="line"></span><br><span class="line">(7)访问http://开发机ip:manage_port，对kingate进行配置。（用户名密码：root/kingate）</span><br><span class="line"></span><br><span class="line">(8)config--&gt;socks(修改服务开关为on;socks端口为可用代服务端口)</span><br><span class="line">access--&gt;allow access list(配置允许所有地址)</span><br><span class="line">其他配置信息就不再多说，根据实际情况自行配置。</span><br><span class="line"></span><br><span class="line">(9)启动socks服务 ./bin/kingate (停止服务 ./bin/kingate -q)</span><br></pre></td></tr></table></figure>
+<h3 id="proxifier安装"><a href="#proxifier安装" class="headerlink" title="proxifier安装"></a>proxifier安装</h3><p>Proxifier是一款功能非常强大的socks5客户端，可以让不支持通过代理服务器工作的网络程序能通过HTTPS或SOCKS代理或代理链。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1)下载proxifierwindows版，直接下一步。。。。</span><br><span class="line">(2)添加代理服务器</span><br><span class="line">(3)添加代理规则</span><br></pre></td></tr></table></figure></p>
+<p>到此就可以实现穿墙，欢快的开发了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/14/socks_proxy/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-blog" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
